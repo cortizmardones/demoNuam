@@ -5,6 +5,7 @@ import com.example.demo.dto.ResultBusinessLogic;
 import com.example.demo.service.ProductService;
 import com.example.demo.service.factory.ProductServiceFactory;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/product")
 @RequiredArgsConstructor
+@Slf4j
 public class ProductController {
 
     private final ProductServiceFactory productServiceFactory;
@@ -21,10 +23,11 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<ResultBusinessLogic> createProduct(@RequestBody ProductRequest request) {
 
-        //LLAMAS AL FACTORY (CAPA DE SERVICIO VAMOS A USAR)
-        ProductService service = productServiceFactory.filterCompany(request.companyRut());
+        log.info("Request recibida createProduct() productName = {} , productPrice = {} , companyRut = {}", request.productName(), request.productPrice(), request.companyRut());
 
-        //LLAMANDO Y RETORNANDO LA LOGICA DE NEGOCIO ESPECIFICA.
-        return ResponseEntity.ok(service.applySpecificBusinessLogic(request));
+        //LLAMAS AL FACTORY (DECIDIR QUE IMPLEMENTACIÓN CONCRETA DEL SERVICIO VAMOS A USAR)
+        ProductService productService = productServiceFactory.filterCompany(request.companyRut());
+
+        return ResponseEntity.ok(productService.applySpecificBusinessLogic(request));
     }
 }

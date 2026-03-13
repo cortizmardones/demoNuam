@@ -5,8 +5,8 @@ import org.springframework.cglib.core.Local;
 import java.time.LocalDateTime;
 
 public record ErrorResponse(
-        String codigo,
-        String mensaje,
+        String code,
+        String message,
         LocalDateTime dateTime
 ) {
 }

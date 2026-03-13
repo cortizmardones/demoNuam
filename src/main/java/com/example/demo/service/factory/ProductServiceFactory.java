@@ -15,7 +15,7 @@ public class ProductServiceFactory {
 
     public ProductService filterCompany(String companyRut) {
         return services.stream()
-                .filter(service -> service.validCompanyRut(companyRut))
+                .filter(service -> service.matchesCompanyRut(companyRut))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("No existe implementación para rutEmpresa: " + companyRut));
     }
